@@ -35,6 +35,8 @@ namespace DN_FastReader
         {
             this.Inbox = new Inbox();
 
+            this.Inbox.StateChangeEventListener.RegisterCallback(async (caller, type, state) => { UpdatedCallback(); await Task.CompletedTask; });
+
             this.Accounts = Hive.LocalAppSettingsEx["Accounts"];
 
             this.Accounts.AccessData(true, k =>
@@ -59,6 +61,20 @@ namespace DN_FastReader
         public void Dispose()
         {
             Inbox._DisposeSafe();
+        }
+
+        ulong lastVersion = 0;
+
+        void UpdatedCallback()
+        {
+            var box = this.Inbox.GetMessageBox();
+
+            if (box.Version != lastVersion)
+            {
+                lastVersion = box.Version;
+
+                Dbg.Where();
+            }
         }
     }
 }

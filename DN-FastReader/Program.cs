@@ -18,7 +18,7 @@ namespace DN_FastReader
     {
         public static int Main(string[] args)
         {
-            const string appName = "AspNetCore1";
+            const string appName = "FastReader";
 
             return StandardMainFunctions.DaemonMain.DoMain(new CoresLibOptions(CoresMode.Application, appName, DebugMode.Debug, false, false), args,
                 getDaemonProc: () => new HttpServerDaemon<Startup>(appName, appName, new HttpServerOptions
