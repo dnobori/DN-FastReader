@@ -7,10 +7,21 @@ using Microsoft.AspNetCore.Mvc;
 using DN_FastReader.Models;
 using Microsoft.AspNetCore.Authorization;
 
+using IPA.Cores.Basic;
+using IPA.Cores.Helper.Basic;
+using static IPA.Cores.Globals.Basic;
+
 namespace DN_FastReader.Controllers
 {
     public class HomeController : Controller
     {
+        readonly FastReader Reader;
+
+        public HomeController(FastReader reader)
+        {
+            this.Reader = reader;
+        }
+
         [Authorize]
         public IActionResult Index()
         {
