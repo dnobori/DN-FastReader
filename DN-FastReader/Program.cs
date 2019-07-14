@@ -16,13 +16,22 @@ namespace DN_FastReader
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            const string appName = "AspNetCore1";
+
+            return StandardMainFunctions.DaemonMain.DoMain(new CoresLibOptions(CoresMode.Application, appName, DebugMode.Debug, false, false), args,
+                getDaemonProc: () => new HttpServerDaemon<Startup>(appName, appName, new HttpServerOptions
+                {
+                    HttpPortsList = 80._SingleList(),
+                    HttpsPortsList = 443._SingleList(),
+                    UseKestrelWithIPACoreStack = true,
+                    DebugKestrelToConsole = false,
+                }));
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        //public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        //    WebHost.CreateDefaultBuilder(args)
+        //        .UseStartup<Startup>();
     }
 }
