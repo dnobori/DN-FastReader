@@ -27,6 +27,7 @@ namespace DN_FastReader
                     HttpsPortsList = 443._SingleList(),
                     UseKestrelWithIPACoreStack = true,
                     DebugKestrelToConsole = false,
+                    UseSimpleBasicAuthentication = true,
                 }));
         }
 

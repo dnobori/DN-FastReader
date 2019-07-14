@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using IPA.Cores.Basic;
 using IPA.Cores.Helper.Basic;
 using static IPA.Cores.Globals.Basic;
+using System.Security.Claims;
 
 namespace DN_FastReader
 {
@@ -39,7 +40,6 @@ namespace DN_FastReader
             //    options.CheckConsentNeeded = context => true;
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
