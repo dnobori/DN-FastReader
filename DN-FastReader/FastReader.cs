@@ -29,7 +29,7 @@ namespace DN_FastReader
     {
         readonly Inbox Inbox;
 
-        readonly HiveData<HiveKeyValue> Accounts;
+        readonly HiveData<HiveKeyValue> AccountsHive;
 
         public FastReader()
         {
@@ -37,11 +37,11 @@ namespace DN_FastReader
 
             this.Inbox.StateChangeEventListener.RegisterCallback(async (caller, type, state) => { UpdatedCallback(); await Task.CompletedTask; });
 
-            this.Accounts = Hive.LocalAppSettingsEx["Accounts"];
+            this.AccountsHive = Hive.LocalAppSettingsEx["Accounts"];
 
-            this.Accounts.AccessData(true, k =>
+            this.AccountsHive.AccessData(true, k =>
             {
-                AccountList o = k.Get<AccountList>("AccountList", new AccountList());
+                AccountList o = k.Get("AccountList", new AccountList());
 
                 foreach (KeyValuePair<string, Account> v in o.List)
                 {
@@ -75,6 +75,11 @@ namespace DN_FastReader
 
                 Dbg.Where();
             }
+        }
+
+        public InboxMessageBox Box()
+        {
+            return null;
         }
     }
 }
