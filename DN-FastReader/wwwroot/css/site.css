@@ -35,3 +35,15 @@ body {
         display: none;
     }
 }
+
+.footer {
+    padding: 1rem 1rem 1rem;
+}
+
+.messages-list-move {
+    transition: transform 1s;
+}
+
+.flip-list-move {
+    transition: transform 1s;
+}

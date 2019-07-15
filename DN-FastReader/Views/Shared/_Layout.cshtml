@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DN_FastReader</title>
+    <title>@ViewData["Title"] - FastReader</title>
     <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @*<link rel="stylesheet" href="~/css/site2.css" asp-append-version="true" />*@
 </head>
 <body>
     @*<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -31,7 +32,7 @@
 
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item"  asp-area="" asp-controller="Home" asp-action="Index">
+            <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
             </a>
 
@@ -45,7 +46,7 @@
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
                 <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
-                    View all unreads
+                    <strong>View all unreads</strong>
                 </a>
 
 
@@ -56,7 +57,7 @@
 
                     <div class="navbar-dropdown">
                         <a class="navbar-item" href="https://www.github.com/">
-                            FastReader Site on GitHUb
+                            FastReader README on GitHUb
                         </a>
                     </div>
                 </div>
@@ -66,7 +67,7 @@
                 <div class="navbar-item">
                     <div class="buttons">
                         <a class="button is-light">
-                            Settings
+                            Accounts
                         </a>
                     </div>
                 </div>
@@ -75,20 +76,20 @@
     </nav>
 
     @*<nav class="navbar is-light" role="navigation" aria-label="main navigation">
-        <div class="container">
-            <div class="navbar-brand">
-                <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
-                    <label class="label is-large">MvcBulmaVue</label>
-                </a>
-            </div>
-            <div id="navbarBasicExample" class="navbar-menu">
-                <div class="navbar-start">
-                    <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    <a class="navbar-item" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
+                        <label class="label is-large">MvcBulmaVue</label>
+                    </a>
+                </div>
+                <div id="navbarBasicExample" class="navbar-menu">
+                    <div class="navbar-start">
+                        <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="navbar-item" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>*@
+        </nav>*@
 
 
     <div class="container body-content">
@@ -97,19 +98,18 @@
         <footer class="footer">
             <div class="content has-text-centered">
                 <p>
-                    Copyright (C) 1997-2009 Daiyuu Nobori
+                    FastReader
                 </p>
             </div>
-        </footer>    </div>
+        </footer>
+    </div>
 
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
-    <script>
-        new Vue({
-            el: '#app'
-        })
-    </script>
+
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

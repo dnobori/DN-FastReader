@@ -63,23 +63,26 @@ namespace DN_FastReader
             Inbox._DisposeSafe();
         }
 
-        ulong lastVersion = 0;
+        ulong currentVersion = 0;
 
+        InboxMessageBox currentBox = new InboxMessageBox();
+        
         void UpdatedCallback()
         {
-            var box = this.Inbox.GetMessageBox();
+            InboxMessageBox box = this.Inbox.GetMessageBox();
 
-            if (box.Version != lastVersion)
-            {
-                lastVersion = box.Version;
-
-                Dbg.Where();
-            }
+            currentVersion = box.Version;
+            this.currentBox = box;
         }
 
-        public InboxMessageBox Box()
+        public int GetCurrentVersion()
         {
-            return null;
+            return (int)(this.currentVersion._RawReadValueUInt32() & 0x7ffffffff);
+        }
+
+        public InboxMessageBox GetCurrentBox()
+        {
+            return this.currentBox;
         }
     }
 }

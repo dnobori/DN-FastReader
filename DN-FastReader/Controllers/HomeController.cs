@@ -28,6 +28,13 @@ namespace DN_FastReader.Controllers
             return View();
         }
 
+        [Authorize]
+        public JsonResult Json()
+        {
+            InboxMessageBox box = this.Reader.GetCurrentBox();
+            return Json(box);
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
