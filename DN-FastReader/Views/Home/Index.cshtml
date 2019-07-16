@@ -2,36 +2,29 @@
     ViewData["Title"] = "Message Box";
 }
 
-<h1 class="title">
-    Fast Reader Test
-</h1>
+<p>　</p>
 
-<div id="demo">
-    <button v-on:click="show = !show">
-        Toggle
-    </button>
-    <transition name="fade">
-        <p v-if="show">hello</p>
-    </transition>
-</div>
-
-
-
-<div id="messages-list-demo" class="box">
-    <button v-on:click="shuffle">Shuffle</button>
-    <transition-group name="messages-list" tag="article">
-        <article class="media" v-for="item in items" v-bind:key="item">
+<div id="messages_list_demo" class="box" v-cloak>
+    @*<button v-on:click="shuffle">Shuffle</button>*@
+    <p v-if="items.length == 0 && error == null">未読メッセージはありません。</p>
+    <p v-if="error != null"><strong style="color: red">エラーが発生しています: {{ error }}</strong><br /><br /></p>
+    <transition-group name="messages_list" tag="article" v-if="items.length != 0">
+        <article class="media" v-for="item in items" v-bind:key="item.id">
             <div class="media-left">
-                <figure class="image is-64x64">
-                    <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+                <figure class="image is-32x32">
+                    <img :src="item.serviceImage" alt="Image">
+                </figure>
+            </div>
+            <div class="media-left" v-if="item.serviceImage != item.fromImage">
+                <figure class="image is-24x24">
+                    <img :src="item.fromImage" alt="Image">
                 </figure>
             </div>
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <strong>{{ item }}</strong> <small>@@johnsmith</small> <small>31m</small>
-                        <br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
+                        <small><strong>{{ item.subject }}</strong></small> <small>{{ item.from }}</small> <small>{{ moment(item.timestamp).format("YYYY/M/D h:mm") }}</small>
+                        <small>{{ item.body }}</small>
                     </p>
                 </div>
             </div>
@@ -39,49 +32,59 @@
     </transition-group>
 </div>
 
-
-<div id="flip-list-demo" class="demo">
-    <button v-on:click="shuffle">Shuffle</button>
-    <transition-group name="flip-list" tag="ul">
-        <li v-for="item in items" v-bind:key="item">
-            {{ item }}
-        </li>
-    </transition-group>
-</div>
-
 @section scripts {
-    <script type="text/javascript">
-        new Vue({
-            el: '#demo',
-            data: {
-                show: true
-            }
-        })
-    </script>
-
-    <script type="text/javascript">
-        new Vue({
-            el: '#flip-list-demo',
-            data: {
-                items: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-            },
-            methods: {
-                shuffle: function () {
-                    this.items = _.shuffle(this.items)
-                }
-            }
-        })
+    <script>
+        Vue.prototype.moment = moment;
 
         new Vue({
-            el: '#messages-list-demo',
+            el: '#messages_list_demo',
             data: {
-                items: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                error: null,
+                items: [],
             },
             methods: {
                 shuffle: function () {
                     //this.items = _.shuffle(this.items);
                     this.items = [1, 2, 3, 89, 4, 5, 6, 7, 8, 9];
                 }
+            },
+            mounted: function () {
+                //axios.get("/Home/GetData/").then(response => {
+                //    var responseData = response.data;
+                //    this.items = responseData.messageList;
+                //});
+
+                var currentVer = -1;
+
+                var reloadMain = function () {
+                    axios.get("/Home/GetVersion").then(ver => {
+                        var serverVer = ver.data;
+                        if (currentVer != serverVer) {
+
+                            axios.get("/Home/GetData/").then(response => {
+                                var responseData = response.data;
+                                this.items = responseData.messageList;
+                                currentVer = serverVer;
+                                //console.log("reloaded " + serverVer);
+                                //console.log(responseData.messageList.length);
+                                //console.log(this);
+                                this.error = null;
+                            }).catch(err => {
+                                this.error = err.message;
+                            });
+                        }
+                    }).catch(err => {
+                        this.error = err.message;
+                    });
+                };
+
+                reloadMain.call(this);
+
+                var this2 = this;
+                window.setInterval(function () {
+                    reloadMain.call(this2);
+                    //console.log("polling");
+                }, 1000);
             }
         })
     </script>

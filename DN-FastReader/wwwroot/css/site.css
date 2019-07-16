@@ -40,10 +40,18 @@ body {
     padding: 1rem 1rem 1rem;
 }
 
-.messages-list-move {
+.messages_list-move {
     transition: transform 1s;
 }
 
-.flip-list-move {
-    transition: transform 1s;
+.messages_list-enter, .messages_list-leave-to {
+    opacity: 0;
+}
+
+.messages_list-leave-active {
+    position: absolute;
+}
+
+[v-cloak] {
+    display: none;
 }

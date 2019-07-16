@@ -29,11 +29,19 @@ namespace DN_FastReader.Controllers
         }
 
         [Authorize]
-        public JsonResult Json()
+        public JsonResult GetData()
         {
             InboxMessageBox box = this.Reader.GetCurrentBox();
             return Json(box);
         }
+
+        [Authorize]
+        public JsonResult GetVersion()
+        {
+            int version = this.Reader.GetCurrentVersion();
+            return Json(version);
+        }
+
 
         public IActionResult About()
         {

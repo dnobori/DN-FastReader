@@ -45,9 +45,9 @@
 
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
+                @*<a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
                     <strong>View all unreads</strong>
-                </a>
+                </a>*@
 
 
                 <div class="navbar-item has-dropdown is-hoverable">
@@ -56,9 +56,8 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a class="navbar-item" href="https://www.github.com/">
-                            FastReader README on GitHUb
-                        </a>
+                        <a class="navbar-item" href="https://www.github.com/">Readme</a>
+                        <a class="navbar-item" href="https://www.github.com/">Source code</a>
                     </div>
                 </div>
             </div>
@@ -94,19 +93,22 @@
 
     <div class="container body-content">
         @RenderBody()
-        <hr />
+        <p>　</p>
+        @*<hr />
         <footer class="footer">
             <div class="content has-text-centered">
                 <p>
                     FastReader
                 </p>
             </div>
-        </footer>
+        </footer>*@
     </div>
 
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
