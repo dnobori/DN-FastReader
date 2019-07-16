@@ -7,8 +7,9 @@
 <h2 class="title is-3">@ViewData["Title"]</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @Html.ActionLink("新しいアカウントを追加", "Create", new { }, new { @class = "button is-info" })
 </p>
+<p>　</p>
 @*<table class="table">
     <thead>
         <tr>
@@ -18,26 +19,48 @@
     <tbody>*@
 @foreach (var item in Model)
 {
+    string statusColor = "dark";
+    string statusText = "停止中 - 情報の入力が必要です";
+
+    if (item.ErrorStr._IsFilled())
+    {
+        statusColor = "danger";
+        statusText = "エラーが発生しています";
+    }
+    else if (item.AccountInfoStr._IsFilled())
+    {
+        statusColor = "success";
+        statusText = "正常に動作中";
+    }
+
     <div class="box">
         <article class="accounts">
             <div class="accounts_content">
                 <div class="content">
-                    <p>
-                        <strong>@System.Reflection.Assembly.GetExecutingAssembly().ToString() @item.ProviderName</strong> @if (item.AccountInfoStr != null) { <strong> @(item.AccountInfoStr) </strong> } <small>@@johnsmith</small> <small>31m</small>
-                        <br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
-                    </p>
+                    <div class="control">
+                        <div class="tags has-addons">
+                            <span class="tag is-dark has-text-weight-bold">@item.ProviderName</span>
+                            <span class="tag is-@statusColor has-text-weight-bold">@statusText</span>
+                        </div>
+                    </div>
+                    @if (item.AccountInfoStr._IsFilled())
+                    {
+                        <strong>アカウント名: @(item.AccountInfoStr) </strong>
+                    }
+                    @if (item.ErrorStr._IsFilled())
+                    {
+                        <p>現在発生しているエラー:</p>
+                        <div class="notification is-danger">
+                            @(item.ErrorStr)
+                        </div>
+                    }
+                    <p> </p>
+                    @Html.ActionLink("このアカウントを削除", "Delete", new { id = item.Guid }, new { @class = "button is-light" })
                 </div>
             </div>
         </article>
     </div>
 
-    <tr>
-        <td>
-            @item.ProviderName - @item.AccountInfoStr
-            @Html.ActionLink("Delete", "Delete", new { id = item.Guid })
-        </td>
-    </tr>
 }
 @*</tbody>
     </table>*@

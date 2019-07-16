@@ -25,9 +25,9 @@ namespace DN_FastReader.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            AccountList accountList = Reader.GetAccountList();
+            Account[] list = Reader.GetAccountList();
 
-            return View(accountList.List);
+            return View(list);
         }
     }
 }

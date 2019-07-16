@@ -22,11 +22,25 @@ namespace DN_FastReader
         public string UserAccessToken;
 
         public string AccountInfoStr;
+
+        public string ErrorStr;
     }
 
-    public class AccountList
+    public class AccountSetting
     {
-        public List<Account> List = new List<Account>();
+        public string Guid;
+
+        public string ProviderName;
+
+        public string AppClientId;
+        public string AppClientSecret;
+
+        public string UserAccessToken;
+    }
+
+    public class AccountSettingList
+    {
+        public List<AccountSetting> List = new List<AccountSetting>();
     }
 
     public class FastReader : IDisposable
@@ -45,13 +59,13 @@ namespace DN_FastReader
 
             this.AccountsHive.AccessData(true, k =>
             {
-                var initial = new AccountList();
+                var initial = new AccountSettingList();
 
                 //initial.List.Add(new Account { AppClientId = "123", Guid = "456", });
 
-                AccountList o = k.Get("AccountList", initial);
+                AccountSettingList o = k.Get("AccountList", initial);
 
-                foreach (Account account in o.List)
+                foreach (AccountSetting account in o.List)
                 {
                     InboxAdapter a = this.Inbox.AddAdapter(account.Guid, account.ProviderName, new InboxAdapterAppCredential { ClientId = account.AppClientId, ClientSecret = account.AppClientSecret });
 
@@ -63,11 +77,11 @@ namespace DN_FastReader
             });
         }
 
-        public AccountList GetAccountList()
+        public Account[] GetAccountList()
         {
             InboxAdapter[] adapters = Inbox.EnumAdapters();
 
-            AccountList ret = new AccountList();
+            List<Account> ret = new List<Account>();
 
             foreach (InboxAdapter ad in adapters)
             {
@@ -79,12 +93,13 @@ namespace DN_FastReader
                     AppClientSecret = ad.AppCredential.ClientSecret,
                     UserAccessToken = ad.UserCredential?.AccessToken,
                     AccountInfoStr = ad.AccountInfoStr,
+                    ErrorStr = ad.LastError?.Message,
                 };
 
-                ret.List.Add(ac);
+                ret.Add(ac);
             }
 
-            return ret;
+            return ret.ToArray();
         }
 
         public void Dispose()
