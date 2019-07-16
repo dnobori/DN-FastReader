@@ -12,17 +12,21 @@ namespace DN_FastReader
 {
     public class Account
     {
+        public string Guid;
+
         public string ProviderName;
 
         public string AppClientId;
         public string AppClientSecret;
 
         public string UserAccessToken;
+
+        public string AccountInfoStr;
     }
 
     public class AccountList
     {
-        public Dictionary<string, Account> List = new Dictionary<string, Account>();
+        public List<Account> List = new List<Account>();
     }
 
     public class FastReader : IDisposable
@@ -41,14 +45,15 @@ namespace DN_FastReader
 
             this.AccountsHive.AccessData(true, k =>
             {
-                AccountList o = k.Get("AccountList", new AccountList());
+                var initial = new AccountList();
 
-                foreach (KeyValuePair<string, Account> v in o.List)
+                //initial.List.Add(new Account { AppClientId = "123", Guid = "456", });
+
+                AccountList o = k.Get("AccountList", initial);
+
+                foreach (Account account in o.List)
                 {
-                    string guid = v.Key;
-                    Account account = v.Value;
-
-                    InboxAdapter a = this.Inbox.AddAdapter(guid, account.ProviderName, new InboxAdapterAppCredential { ClientId = account.AppClientId, ClientSecret = account.AppClientSecret });
+                    InboxAdapter a = this.Inbox.AddAdapter(account.Guid, account.ProviderName, new InboxAdapterAppCredential { ClientId = account.AppClientId, ClientSecret = account.AppClientSecret });
 
                     if (account.UserAccessToken._IsFilled())
                     {
@@ -56,6 +61,30 @@ namespace DN_FastReader
                     }
                 }
             });
+        }
+
+        public AccountList GetAccountList()
+        {
+            InboxAdapter[] adapters = Inbox.EnumAdapters();
+
+            AccountList ret = new AccountList();
+
+            foreach (InboxAdapter ad in adapters)
+            {
+                Account ac = new Account
+                {
+                    Guid = ad.Guid,
+                    ProviderName = ad.AdapterName,
+                    AppClientId = ad.AppCredential.ClientId,
+                    AppClientSecret = ad.AppCredential.ClientSecret,
+                    UserAccessToken = ad.UserCredential?.AccessToken,
+                    AccountInfoStr = ad.AccountInfoStr,
+                };
+
+                ret.List.Add(ac);
+            }
+
+            return ret;
         }
 
         public void Dispose()
@@ -66,7 +95,7 @@ namespace DN_FastReader
         ulong currentVersion = 0;
 
         InboxMessageBox currentBox = new InboxMessageBox();
-        
+
         void UpdatedCallback()
         {
             InboxMessageBox box = this.Inbox.GetMessageBox();

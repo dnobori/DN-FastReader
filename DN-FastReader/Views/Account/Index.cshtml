@@ -1,0 +1,44 @@
+﻿@model IEnumerable<DN_FastReader.Account>
+
+@{
+    ViewData["Title"] = "アカウント一覧";
+}
+
+<h2 class="title is-3">@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@*<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>*@
+@foreach (var item in Model)
+{
+    <div class="box">
+        <article class="accounts">
+            <div class="accounts_content">
+                <div class="content">
+                    <p>
+                        <strong>@System.Reflection.Assembly.GetExecutingAssembly().ToString() @item.ProviderName</strong> @if (item.AccountInfoStr != null) { <strong> @(item.AccountInfoStr) </strong> } <small>@@johnsmith</small> <small>31m</small>
+                        <br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
+                    </p>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <tr>
+        <td>
+            @item.ProviderName - @item.AccountInfoStr
+            @Html.ActionLink("Delete", "Delete", new { id = item.Guid })
+        </td>
+    </tr>
+}
+@*</tbody>
+    </table>*@
+
