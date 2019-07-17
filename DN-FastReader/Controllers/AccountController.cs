@@ -29,5 +29,19 @@ namespace DN_FastReader.Controllers
 
             return View(list);
         }
+
+        [Route("account/create")]
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [Route("account/create")]
+        [HttpPost]
+        public IActionResult CreatePost()
+        {
+            return View();
+        }
     }
 }

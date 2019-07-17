@@ -51,30 +51,36 @@ namespace DN_FastReader
 
         public FastReader()
         {
-            this.Inbox = new Inbox();
-
-            this.Inbox.StateChangeEventListener.RegisterCallback(async (caller, type, state) => { UpdatedCallback(); await Task.CompletedTask; });
-
-            this.AccountsHive = Hive.LocalAppSettingsEx["Accounts"];
-
-            this.AccountsHive.AccessData(true, k =>
+            try
             {
-                var initial = new AccountSettingList();
+                this.Inbox = new Inbox();
 
-                //initial.List.Add(new Account { AppClientId = "123", Guid = "456", });
+                this.Inbox.StateChangeEventListener.RegisterCallback(async (caller, type, state) => { UpdatedCallback(); await Task.CompletedTask; });
 
-                AccountSettingList o = k.Get("AccountList", initial);
+                this.AccountsHive = Hive.LocalAppSettingsEx["Accounts"];
 
-                foreach (AccountSetting account in o.List)
+                this.AccountsHive.AccessData(true, k =>
                 {
-                    InboxAdapter a = this.Inbox.AddAdapter(account.Guid, account.ProviderName, new InboxAdapterAppCredential { ClientId = account.AppClientId, ClientSecret = account.AppClientSecret });
+                    var initial = new AccountSettingList();
 
-                    if (account.UserAccessToken._IsFilled())
+                    AccountSettingList o = k.Get("AccountList", initial);
+
+                    foreach (AccountSetting account in o.List)
                     {
-                        a.Start(new InboxAdapterUserCredential { AccessToken = account.UserAccessToken });
+                        InboxAdapter a = this.Inbox.AddAdapter(account.Guid, account.ProviderName, new InboxAdapterAppCredential { ClientId = account.AppClientId, ClientSecret = account.AppClientSecret });
+
+                        if (account.UserAccessToken._IsFilled())
+                        {
+                            a.Start(new InboxAdapterUserCredential { AccessToken = account.UserAccessToken });
+                        }
                     }
-                }
-            });
+                });
+            }
+            catch
+            {
+                this._DisposeSafe();
+                throw;
+            }
         }
 
         public Account[] GetAccountList()
