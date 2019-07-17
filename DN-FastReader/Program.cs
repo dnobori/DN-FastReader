@@ -20,7 +20,13 @@ namespace DN_FastReader
         {
             const string appName = "FastReader";
 
-            return StandardMainFunctions.DaemonMain.DoMain(new CoresLibOptions(CoresMode.Application, appName, DebugMode.Debug, false, true), args,
+            return StandardMainFunctions.DaemonMain.DoMain(
+                new CoresLibOptions(CoresMode.Application,
+                    appName: appName,
+                    defaultDebugMode: DebugMode.Debug,
+                    defaultPrintStatToConsole: false,
+                    defaultRecordLeakFullStack: false),
+                args: args,
                 getDaemonProc: () => new HttpServerDaemon<Startup>(appName, appName, new HttpServerOptions
                 {
                     HttpPortsList = 80._SingleList(),

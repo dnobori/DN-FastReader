@@ -16,7 +16,7 @@ namespace DN_FastReader.Controllers
     public class AccountController : Controller
     {
         readonly FastReader Reader;
-
+        
         public AccountController(FastReader reader)
         {
             this.Reader = reader;
