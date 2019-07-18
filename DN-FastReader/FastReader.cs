@@ -3,27 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using DN_FastReader.Models;
 
 using IPA.Cores.Basic;
 using IPA.Cores.Helper.Basic;
 using static IPA.Cores.Globals.Basic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DN_FastReader
 {
     public class Account
     {
-        public string Guid;
+        public string Guid { get; set; }
 
-        public string ProviderName;
+        public string ProviderName { get; set; }
 
-        public string AppClientId;
-        public string AppClientSecret;
+        public string AppClientId { get; set; }
+        public string AppClientSecret { get; set; }
 
-        public string UserAccessToken;
+        public string UserAccessToken { get; set; }
 
-        public string AccountInfoStr;
+        public string AccountInfoStr { get; set; }
 
-        public string ErrorStr;
+        public string ErrorStr { get; set; }
     }
 
     public class AccountSetting
@@ -83,6 +86,16 @@ namespace DN_FastReader
             }
         }
 
+        public void Dispose()
+        {
+            Inbox._DisposeSafe();
+        }
+
+        public string[] GetProviderNamesList()
+        {
+            return Inbox.GetProviderNameList();
+        }
+
         public Account[] GetAccountList()
         {
             InboxAdapter[] adapters = Inbox.EnumAdapters();
@@ -108,11 +121,6 @@ namespace DN_FastReader
             return ret.ToArray();
         }
 
-        public void Dispose()
-        {
-            Inbox._DisposeSafe();
-        }
-
         ulong currentVersion = 0;
 
         InboxMessageBox currentBox = new InboxMessageBox();
@@ -133,6 +141,42 @@ namespace DN_FastReader
         public InboxMessageBox GetCurrentBox()
         {
             return this.currentBox;
+        }
+
+        public IEnumerable<SelectListItem> GetProvidersDropDownList(string currentSelected)
+        {
+            List<SelectListItem> ret = new List<SelectListItem>();
+
+            string[] providers = Inbox.GetProviderNameList();
+
+            providers._DoForEach(x => ret.Add(new SelectListItem(x, x, currentSelected._IsSamei(x))));
+
+            return ret;
+        }
+
+        public string AddAccount(Account a)
+        {
+            string guid = Str.NewGuid();
+
+            InboxAdapter adapter = Inbox.AddAdapter(guid, a.ProviderName, new InboxAdapterAppCredential { ClientId = a.AppClientId, ClientSecret = a.AppClientSecret });
+
+            this.AccountsHive.AccessData(true, k =>
+            {
+                AccountSettingList o = k.Get<AccountSettingList>("AccountList");
+
+                o.List.Add(new AccountSetting { Guid = adapter.Guid, ProviderName = adapter.AdapterName, AppClientId = adapter.AppCredential.ClientId, AppClientSecret = adapter.AppCredential.ClientSecret });
+
+                k.Set("AccountList", o);
+            });
+
+            return guid;
+        }
+
+        public InboxAdapter GetAdapter(string guid)
+        {
+            InboxAdapter adapter = Inbox.EnumAdapters().Single(x => x.Guid._IsSamei(guid));
+
+            return adapter;
         }
     }
 }

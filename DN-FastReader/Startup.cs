@@ -41,7 +41,12 @@ namespace DN_FastReader
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .AddViewOptions(opt =>
+                {
+                    opt.HtmlHelperOptions.ClientValidationEnabled = false;
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSingleton(new FastReader());
         }

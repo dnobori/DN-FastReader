@@ -4,7 +4,7 @@
     ViewData["Title"] = "アカウント一覧";
 }
 
-<h2 class="title is-3">@ViewData["Title"]</h2>
+<h2 class="title is-4">@ViewData["Title"]</h2>
 
 <p>
     @Html.ActionLink("新しいアカウントを追加", "Create", new { }, new { @class = "button is-info" })
@@ -19,18 +19,21 @@
     <tbody>*@
 @foreach (var item in Model)
 {
-    string statusColor = "dark";
-    string statusText = "停止中 - 情報の入力が必要です";
+    string statusColor = "warning";
+    string statusText = "まだ同期していません - OAuth2 ユーザー認証が必要です";
+    bool showUserAuthButton = true;
 
     if (item.ErrorStr._IsFilled())
     {
         statusColor = "danger";
         statusText = "エラーが発生しています";
+        showUserAuthButton = false;
     }
     else if (item.AccountInfoStr._IsFilled())
     {
         statusColor = "success";
-        statusText = "正常に動作中";
+        statusText = "正常に同期中";
+        showUserAuthButton = false;
     }
 
     <div class="box">
@@ -43,6 +46,12 @@
                             <span class="tag is-@statusColor has-text-weight-bold">@statusText</span>
                         </div>
                     </div>
+                    @if (showUserAuthButton)
+                    {
+                        <p></p>
+                        @Html.ActionLink("ユーザー認証を実施する", "AuthStart", new { id = item.Guid }, new { @class = "button is-info" })
+                    }
+
                     @if (item.AccountInfoStr._IsFilled())
                     {
                         <strong>アカウント名: @(item.AccountInfoStr) </strong>

@@ -1,23 +1,65 @@
 ﻿@model DN_FastReader.Account
+@inject DN_FastReader.FastReader reader
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "新しいアカウントの追加";
 }
 
-<h2>Create</h2>
+<h2 class="title is-4">@ViewData["Title"]</h2>
 
-<h4>Account</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+<form asp-action="Create">
+    <div class="box">
+        <div class="content">
+            <p>まず、お使いのサービスに Web アプリを新規に登録する必要があります。</p>
+            <strong>1. Web サービスの選択</strong>
+            <div class="field">
+                <div class="control">
+                    <div class="select is-primary">
+                        <select asp-for="ProviderName" asp-items="reader.GetProvidersDropDownList(Model.ProviderName)  " onchange="this.form.submit();">
+                            <option value="">接続したい Web サービスを選択してください</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-        </form>
+            @if (Model.ProviderName._IsFilled())
+            {
+                <p><strong>2. @Model.ProviderName サービスへのアプリの登録</strong></p>
+                <p>以下の手順に従って、@Model.ProviderName サービスへの本アプリの登録を完了してください。</p>
+                <div class="box">
+                    ちちち
+                </div>
+                <p><strong>3. 登録されたアプリの Client ID および Client Secret の入力</strong></p>
+                <p>2. の方法で登録されたアプリの Client ID および Client Sectet を下記のフォームに入力してください。</p>
+                <p>Client ID:</p>
+                <input asp-for="AppClientId" class="input is-info" />
+                <p></p>
+                <p>Client Secret:</p>
+                <input asp-for="AppClientSecret" class="input is-info" />
+                <p></p>
+                <p>入力したら、「追加」をクリックしてください。</p>
+                @if ((ViewBag.Error as string)._IsFilled())
+                {
+                    <div class="notification is-warning">
+                        @ViewBag.Error
+                    </div>
+                    <p></p>
+                }
+                <input class="button is-success" type="submit" asp-action="OnAdd" value="追加">
+            }
+        </div>
     </div>
-</div>
+</form>
+
+@*<div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>*@
 
 <div>
     <a asp-action="Index">Back to List</a>

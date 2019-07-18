@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using IPA.Cores.Basic;
 using IPA.Cores.Helper.Basic;
 using static IPA.Cores.Globals.Basic;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace DN_FastReader.Controllers
 {
@@ -62,10 +63,16 @@ namespace DN_FastReader.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            IExceptionHandlerPathFeature errPath =
+                HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+
+            Exception error = errPath?.Error;
+
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = error?.Message ?? "Unknown Error" });
         }
     }
 }

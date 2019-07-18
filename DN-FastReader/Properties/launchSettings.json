@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "Run": {
+      "commandName": "Project"
+    },
+    "AspNet Test": {
+      "commandName": "Project",
+      "commandLineArgs": "Daemon Test"
+    },
+    "AspNet Watch": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\dotnet\\dotnet.exe",
+      "commandLineArgs": "watch run Daemon Test",
+      "workingDirectory": ".\\"
+    }
+  }
+} 

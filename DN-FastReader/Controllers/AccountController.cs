@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using IPA.Cores.Basic;
 using IPA.Cores.Helper.Basic;
 using static IPA.Cores.Globals.Basic;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace DN_FastReader.Controllers
 {
@@ -30,18 +31,51 @@ namespace DN_FastReader.Controllers
             return View(list);
         }
 
-        [Route("account/create")]
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            Account a = new Account();
+            return View(a);
         }
 
-        [Route("account/create")]
         [HttpPost]
-        public IActionResult CreatePost()
+        public IActionResult Create(Account a)
         {
-            return View();
+            return View(a);
+        }
+
+        [HttpPost]
+        public IActionResult OnAdd(Account a)
+        {
+            List<string> error = new List<string>();
+            if (a.ProviderName._IsEmpty()) error.Add("サービスが選択されていません。");
+            if (a.AppClientId._IsEmpty()) error.Add("Client ID が指定されていません。");
+            if (a.AppClientSecret._IsEmpty()) error.Add("Client Secret が指定されていません。");
+
+            if (error.Count >= 1)
+            {
+                ViewBag.Error = error._Combine("\n");
+                return View("Create", a);
+            }
+
+            string guid = Reader.AddAccount(a);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult AuthStart(string id)
+        {
+            InboxAdapter adapter = Reader.GetAdapter(id);
+
+            string url = Str.BuildHttpUrl(Request.Scheme, Request.Host.Host, Request.Host.Port ?? 0, this.Url.Action("test1"));
+
+            throw new ApplicationException(url);
+
+            //adapter.AuthStartGetUrl(redi
+
+
         }
     }
 }
+
