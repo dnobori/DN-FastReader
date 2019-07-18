@@ -56,7 +56,7 @@ namespace DN_FastReader
         {
             try
             {
-                this.Inbox = new Inbox();
+                this.Inbox = new Inbox(new InboxOptions(recordRealtimeTextLog: true));
 
                 this.Inbox.StateChangeEventListener.RegisterCallback(async (caller, type, state) => { UpdatedCallback(); await Task.CompletedTask; });
 
