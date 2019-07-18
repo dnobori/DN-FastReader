@@ -30,4 +30,6 @@
     <ProjectReference Include="..\submodules\IPA-DN-Cores\Cores.NET\Cores.Lib\Cores.Lib.DotNet2.1.Full\Cores.Lib.DotNet2.1.Full.csproj" />
   </ItemGroup>
 
+  <Import Project="..\submodules\IPA-DN-Cores\Cores.NET\Cores.AspNet\Cores.AspNet.projitems" Label="Shared" />
+
 </Project>

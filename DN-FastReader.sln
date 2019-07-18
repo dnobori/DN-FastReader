@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DN-FastReader", "DN-FastReader\DN-FastReader.csproj", "{506BF978-35DA-4B8E-B9C1-9126C557F823}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DN-FastReader", "DN-FastReader\DN-FastReader.csproj", "{506BF978-35DA-4B8E-B9C1-9126C557F823}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D9CA84CD-D082-4DA4-A41F-732072CBB878} = {D9CA84CD-D082-4DA4-A41F-732072CBB878}
 	EndProjectSection
@@ -12,9 +12,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cores.Lib.DotNet2.1.Full", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Cores.Basic", "submodules\IPA-DN-Cores\Cores.NET\Cores.Basic\Cores.Basic.shproj", "{1C674893-7C84-4E7C-834E-6E2370225DA0}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Cores.AspNet", "submodules\IPA-DN-Cores\Cores.NET\Cores.AspNet\Cores.AspNet.shproj", "{27736EAB-5C91-4816-98BC-30E5DADAA9E9}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		submodules\IPA-DN-Cores\Cores.NET\Cores.Basic\Cores.Basic.projitems*{1c674893-7c84-4e7c-834e-6e2370225da0}*SharedItemsImports = 13
+		submodules\IPA-DN-Cores\Cores.NET\Cores.AspNet\Cores.AspNet.projitems*{27736eab-5c91-4816-98bc-30e5dadaa9e9}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

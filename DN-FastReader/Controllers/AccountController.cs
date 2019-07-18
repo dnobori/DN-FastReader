@@ -41,7 +41,20 @@ namespace DN_FastReader.Controllers
         [HttpPost]
         public IActionResult Create(Account a)
         {
-            return View(a);
+            if (a.ProviderName._IsEmpty() == false)
+            {
+                string helpStr = Reader.Inbox.GetProviderAddingAppHelpString(a.ProviderName);
+
+                string redirectUrl = this.GenerateAbsoluteUrl(nameof(authCallbackAsync));
+
+                helpStr = helpStr._ReplaceStr("___REDIRECT_URL___", redirectUrl);
+
+                string helpStrHtml = Str.LinkUrlOnText(Str.ToHtml(helpStr, true), Consts.HtmlTarget.Blank);
+
+                ViewBag.HelpStr = helpStrHtml;
+            }
+
+            return View("Create", a);
         }
 
         [HttpPost]
@@ -55,12 +68,12 @@ namespace DN_FastReader.Controllers
             if (error.Count >= 1)
             {
                 ViewBag.Error = error._Combine("\n");
-                return View("Create", a);
+                return Create(a);
             }
 
             string guid = Reader.AddAccount(a);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("AuthStart", new { id = guid });
         }
 
         [HttpGet]
@@ -68,13 +81,29 @@ namespace DN_FastReader.Controllers
         {
             InboxAdapter adapter = Reader.GetAdapter(id);
 
-            string url = Str.BuildHttpUrl(Request.Scheme, Request.Host.Host, Request.Host.Port ?? 0, this.Url.Action("test1"));
+            string callbackUrl = this.GenerateAbsoluteUrl(nameof(authCallbackAsync));
+            string authUrl = adapter.AuthStartGetUrl(callbackUrl, id);
 
-            throw new ApplicationException(url);
+            return Redirect(authUrl);
+        }
 
-            //adapter.AuthStartGetUrl(redi
+        [HttpGet]
+        public async Task<IActionResult> authCallbackAsync(string code, string state)
+        {
+            if (code._IsEmpty() || state._IsEmpty())
+            {
+                throw new ApplicationException($"この URL は認証サービスからのコールバック専用です。直接アクセスすることはできません。");
+            }
 
+            string id = state;
+            InboxAdapter adapter = Reader.GetAdapter(id);
+            InboxAdapterUserCredential credential = await adapter.AuthGetCredentialAsync(code, this.GenerateAbsoluteUrl(nameof(authCallbackAsync)));
 
+            adapter.Start(credential);
+
+            Reader.SaveSettingsFile();
+
+            return Redirect("/");
         }
     }
 }

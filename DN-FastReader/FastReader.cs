@@ -48,7 +48,7 @@ namespace DN_FastReader
 
     public class FastReader : IDisposable
     {
-        readonly Inbox Inbox;
+        public Inbox Inbox { get; }
 
         readonly HiveData<HiveKeyValue> AccountsHive;
 
@@ -160,16 +160,31 @@ namespace DN_FastReader
 
             InboxAdapter adapter = Inbox.AddAdapter(guid, a.ProviderName, new InboxAdapterAppCredential { ClientId = a.AppClientId, ClientSecret = a.AppClientSecret });
 
+            SaveSettingsFile();
+
+            return guid;
+        }
+
+        public void SaveSettingsFile()
+        {
             this.AccountsHive.AccessData(true, k =>
             {
-                AccountSettingList o = k.Get<AccountSettingList>("AccountList");
+                AccountSettingList o = new AccountSettingList();
 
-                o.List.Add(new AccountSetting { Guid = adapter.Guid, ProviderName = adapter.AdapterName, AppClientId = adapter.AppCredential.ClientId, AppClientSecret = adapter.AppCredential.ClientSecret });
+                foreach (var adapter in this.Inbox.EnumAdapters())
+                {
+                    o.List.Add(new AccountSetting
+                    {
+                        Guid = adapter.Guid,
+                        ProviderName = adapter.AdapterName,
+                        AppClientId = adapter.AppCredential?.ClientId,
+                        AppClientSecret = adapter.AppCredential?.ClientSecret,
+                        UserAccessToken = adapter.UserCredential?.AccessToken
+                    });
+                }
 
                 k.Set("AccountList", o);
             });
-
-            return guid;
         }
 
         public InboxAdapter GetAdapter(string guid)
