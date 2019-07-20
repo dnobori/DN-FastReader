@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject DN_FastReader.FastReader reader
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -9,99 +10,40 @@
     @*<link rel="stylesheet" href="~/css/site2.css" asp-append-version="true" />*@
 </head>
 <body>
-    @*<nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">DN_FastReader</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>*@
+
+@{
+    string bottonColor = "light";
+    string configLabel = "設定";
+    int errCounter = reader.GetErrorCount();
+    if (errCounter >= 1)
+    {
+        configLabel = $"{errCounter} 件のエラーが発生中";
+        bottonColor = "danger";
+    }
+}
+    
 
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
             </a>
-
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-
-        <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                @*<a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
-                    <strong>View all unreads</strong>
-                </a>*@
-
-
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        ヘルプ
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-@bottonColor" asp-controller="Account" asp-action="Index">
+                        @configLabel
                     </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="https://www.github.com/">使い方</a>
-                        <a class="navbar-item" href="https://www.github.com/">ソース・コード</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-light">
-                            アカウント設定
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    @*<nav class="navbar is-light" role="navigation" aria-label="main navigation">
-            <div class="container">
-                <div class="navbar-brand">
-                    <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
-                        <label class="label is-large">MvcBulmaVue</label>
-                    </a>
-                </div>
-                <div id="navbarBasicExample" class="navbar-menu">
-                    <div class="navbar-start">
-                        <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        <a class="navbar-item" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
-                    </div>
-                </div>
-            </div>
-        </nav>*@
+
 
 
     <div class="container body-content">
         @RenderBody()
         <p>　</p>
-        @*<hr />
-        <footer class="footer">
-            <div class="content has-text-centered">
-                <p>
-                    FastReader
-                </p>
-            </div>
-        </footer>*@
     </div>
 
     <script src="https://unpkg.com/vue"></script>

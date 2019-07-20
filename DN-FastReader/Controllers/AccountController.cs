@@ -45,7 +45,7 @@ namespace DN_FastReader.Controllers
             {
                 string helpStr = Reader.Inbox.GetProviderAddingAppHelpString(a.ProviderName);
 
-                string redirectUrl = this.GenerateAbsoluteUrl(nameof(authCallbackAsync));
+                string redirectUrl = this.GenerateAbsoluteUrl(nameof(AuthCallback));
 
                 helpStr = helpStr._ReplaceStr("___REDIRECT_URL___", redirectUrl);
 
@@ -81,14 +81,14 @@ namespace DN_FastReader.Controllers
         {
             InboxAdapter adapter = Reader.GetAdapter(id);
 
-            string callbackUrl = this.GenerateAbsoluteUrl(nameof(authCallbackAsync));
+            string callbackUrl = this.GenerateAbsoluteUrl(nameof(AuthCallback));
             string authUrl = adapter.AuthStartGetUrl(callbackUrl, id);
 
             return Redirect(authUrl);
         }
 
         [HttpGet]
-        public async Task<IActionResult> authCallbackAsync(string code, string state)
+        public async Task<IActionResult> AuthCallback(string code, string state)
         {
             if (code._IsEmpty() || state._IsEmpty())
             {
@@ -97,13 +97,22 @@ namespace DN_FastReader.Controllers
 
             string id = state;
             InboxAdapter adapter = Reader.GetAdapter(id);
-            InboxAdapterUserCredential credential = await adapter.AuthGetCredentialAsync(code, this.GenerateAbsoluteUrl(nameof(authCallbackAsync)));
+            InboxAdapterUserCredential credential = await adapter.AuthGetCredentialAsync(code, this.GenerateAbsoluteUrl(nameof(AuthCallback)));
 
             adapter.Start(credential);
 
             Reader.SaveSettingsFile();
 
             return Redirect("/");
+        }
+
+        public IActionResult Delete(string id)
+        {
+            Reader.DeleteAdapter(id);
+
+            Reader.SaveSettingsFile();
+
+            return RedirectToAction("Index");
         }
     }
 }

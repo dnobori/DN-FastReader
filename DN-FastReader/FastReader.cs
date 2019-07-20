@@ -193,5 +193,23 @@ namespace DN_FastReader
 
             return adapter;
         }
+
+        public void DeleteAdapter(string guid)
+        {
+            Inbox.DeleteAdapter(guid);
+        }
+
+        public int GetErrorCount()
+        {
+            int ret = 0;
+            foreach (var a in Inbox.EnumAdapters())
+            {
+                if (a.LastError != null)
+                {
+                    ret++;
+                }
+            }
+            return ret;
+        }
     }
 }
