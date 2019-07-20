@@ -26,7 +26,7 @@
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+                <img src="~/images/logo.jpg" width="112" height="28" asp-append-version="true">
             </a>
             <div class="navbar-item">
                 <div class="buttons">
@@ -43,6 +43,11 @@
 
     <div class="container body-content">
         @RenderBody()
+        <p>　</p>
+        <p style="text-align: center">
+            <img src="~/images/logo2.jpg" />
+        </p>
+        <p>　</p>
         <p>　</p>
     </div>
 
