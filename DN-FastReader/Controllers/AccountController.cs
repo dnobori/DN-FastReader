@@ -47,6 +47,10 @@ namespace DN_FastReader.Controllers
 
                 string redirectUrl = this.GenerateAbsoluteUrl(nameof(AuthCallback));
 
+                Uri uri = new Uri(redirectUrl);
+
+                helpStr = helpStr._ReplaceStr("___DOMAIN_FQDN___", uri.Host);
+
                 helpStr = helpStr._ReplaceStr("___REDIRECT_URL___", redirectUrl);
 
                 string helpStrHtml = Str.LinkUrlOnText(Str.ToHtml(helpStr, true), Consts.HtmlTarget.Blank);
