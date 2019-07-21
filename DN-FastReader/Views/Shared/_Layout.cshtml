@@ -13,18 +13,6 @@
 </head>
 <body>
 
-    @{
-        string bottonColor = "light";
-        string configLabel = "設定";
-        int errCounter = reader.GetErrorCount();
-        if (errCounter >= 1)
-        {
-            configLabel = $"{errCounter} 件のエラーが発生中";
-            bottonColor = "danger";
-        }
-    }
-
-
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
