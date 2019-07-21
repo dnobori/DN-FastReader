@@ -17,6 +17,11 @@
         </tr>
     </thead>
     <tbody>*@
+@if (Model.Count() >= 1)
+{
+<p>登録済みアカウントの認証情報 (API トークンなど) は、万一このページが不正にアクセスされても読み取られないように、この Web 画面には表示されていません。<br />認証情報を確認したい場合は、サーバーの Local/App_FastReader/Config/AppSettingsEx/Accounts.json をご覧ください。</p><BR />
+}
+
 @foreach (var item in Model)
 {
     string statusColor = "warning";
@@ -42,7 +47,7 @@
                 <div class="content">
                     <div class="control">
                         <div class="tags has-addons">
-                            <span class="tag is-dark has-text-weight-bold">@item.ProviderName</span>
+                            <span class="tag is-dark has-text-weight-bold">@item.ProviderName._ReplaceStr("_", " ")</span>
                             <span class="tag is-@statusColor has-text-weight-bold">@statusText</span>
                         </div>
                     </div>
@@ -52,9 +57,11 @@
                         @Html.ActionLink("ユーザー認証を実施する", "AuthStart", new { id = item.Guid }, new { @class = "button is-info" })
                     }
 
+                    <strong>設定 ID: @item.Guid</strong><br />
+
                     @if (item.AccountInfoStr._IsFilled())
                     {
-                        <strong>アカウント名: @(item.AccountInfoStr) </strong>
+                        <strong>アカウント名: @(item.AccountInfoStr) </strong><br />
                     }
                     @if (item.ErrorStr._IsFilled())
                     {

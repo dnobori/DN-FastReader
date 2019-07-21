@@ -70,6 +70,11 @@ namespace DN_FastReader
 
                     foreach (AccountSetting account in o.List)
                     {
+                        if (account.ProviderName._IsSamei(Consts.InboxProviderNames.Slack_Old))
+                        {
+                            account.ProviderName = Consts.InboxProviderNames.Slack_App;
+                        }
+
                         InboxAdapter a = this.Inbox.AddAdapter(account.Guid, account.ProviderName, new InboxAdapterAppCredential { ClientId = account.AppClientId, ClientSecret = account.AppClientSecret });
 
                         if (account.UserAccessToken._IsFilled())
@@ -149,7 +154,7 @@ namespace DN_FastReader
 
             string[] providers = Inbox.GetProviderNameList();
 
-            providers._DoForEach(x => ret.Add(new SelectListItem(x, x, currentSelected._IsSamei(x))));
+            providers._DoForEach(x => ret.Add(new SelectListItem(x._ReplaceStr("_", " "), x, currentSelected._IsSamei(x))));
 
             return ret;
         }

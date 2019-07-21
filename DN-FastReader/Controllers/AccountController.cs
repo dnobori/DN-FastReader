@@ -66,7 +66,12 @@ namespace DN_FastReader.Controllers
         {
             List<string> error = new List<string>();
             if (a.ProviderName._IsEmpty()) error.Add("サービスが選択されていません。");
-            if (a.AppClientId._IsEmpty()) error.Add("Client ID が指定されていません。");
+
+            if (a.ProviderName._IsSamei(Consts.InboxProviderNames.Slack_User) == false)
+            {
+                if (a.AppClientId._IsEmpty()) error.Add("Client ID が指定されていません。");
+            }
+
             if (a.AppClientSecret._IsEmpty()) error.Add("Client Secret が指定されていません。");
 
             if (error.Count >= 1)
@@ -86,7 +91,18 @@ namespace DN_FastReader.Controllers
             InboxAdapter adapter = Reader.GetAdapter(id);
 
             string callbackUrl = this.GenerateAbsoluteUrl(nameof(AuthCallback));
+
             string authUrl = adapter.AuthStartGetUrl(callbackUrl, id);
+
+            if (authUrl._IsEmpty())
+            {
+                // No need to auth redirect
+                adapter.Start(new InboxAdapterUserCredential());
+
+                Reader.SaveSettingsFile();
+
+                return Redirect("/");
+            }
 
             return Redirect(authUrl);
         }

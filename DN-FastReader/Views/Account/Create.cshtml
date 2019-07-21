@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "新しいアカウントの追加";
+    string providerNameFriendly = Model.ProviderName._ReplaceStr("_", " ");
 }
 
 <h2 class="title is-4">@ViewData["Title"]</h2>
@@ -23,8 +24,8 @@
             </div>
             @if (Model.ProviderName._IsFilled())
             {
-                <p><strong>2. @Model.ProviderName サービスへのアプリの登録</strong></p>
-                <p>以下の手順に従って、@Model.ProviderName サービスへの本アプリの登録を完了してください。</p>
+                <p><strong>2. @providerNameFriendly サービスへのアプリの登録</strong></p>
+                <p>以下の手順に従って、@providerNameFriendly サービスへの本アプリの登録を完了してください。</p>
                 <div class="box">
                     @Html.Raw(ViewBag.HelpStr)
                 </div>
