@@ -81,6 +81,11 @@ namespace DN_FastReader
                         {
                             a.Start(new InboxAdapterUserCredential { AccessToken = account.UserAccessToken });
                         }
+                        else if (account.ProviderName._IsSamei(Consts.InboxProviderNames.Slack_User))
+                        {
+                            // Special: Slack legacy tokens
+                            a.Start(new InboxAdapterUserCredential());
+                        }
                     }
                 });
             }
