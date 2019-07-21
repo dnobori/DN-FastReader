@@ -1,10 +1,18 @@
 ﻿@inject DN_FastReader.FastReader reader
+@{
+    string title = ViewData["Title"] + "- 未読さん";
+    string title2 = ViewData["Title2"] as string;
+    if (title2._IsFilled())
+    {
+        title = title2;
+    }
+}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - 未読さん</title>
+    <title>@title</title>
     <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
