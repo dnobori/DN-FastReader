@@ -13,17 +13,17 @@
 </head>
 <body>
 
-@{
-    string bottonColor = "light";
-    string configLabel = "設定";
-    int errCounter = reader.GetErrorCount();
-    if (errCounter >= 1)
-    {
-        configLabel = $"{errCounter} 件のエラーが発生中";
-        bottonColor = "danger";
+    @{
+        string bottonColor = "light";
+        string configLabel = "設定";
+        int errCounter = reader.GetErrorCount();
+        if (errCounter >= 1)
+        {
+            configLabel = $"{errCounter} 件のエラーが発生中";
+            bottonColor = "danger";
+        }
     }
-}
-    
+
 
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
@@ -32,8 +32,8 @@
             </a>
             <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-@bottonColor" asp-controller="Account" asp-action="Index">
-                        @configLabel
+                    <a v-bind:class="classstr" id="config_button" asp-controller="Account" asp-action="Index">
+                        {{ text }}
                     </a>
                 </div>
             </div>
@@ -59,6 +59,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+    <script>
+        new Vue({
+            el: '#config_button',
+            data: {
+                text: "Config",
+                classstr: "button is-danger",
+            },
+            mounted: function () {
+                var reloadMain = function () {
+                    axios.get("/Home/GetErrorCount").then(ver => {
+                        var count = ver.data;
+                        if (count == 0) {
+                            this.text = "アカウント設定";
+                            this.classstr = "button is-light";
+                        }
+                        else {
+                            this.text = count + " 件のエラーが発生中";
+                            this.classstr = "button is-danger";
+                        }
+                    }).catch(err => {
+                    });
+                };
+
+                reloadMain.call(this);
+
+                var this2 = this;
+                window.setInterval(function () {
+                    reloadMain.call(this2);
+                    //console.log("polling");
+                }, 3000);
+            }
+        });
+
+    </script>
 
     @RenderSection("Scripts", required: false)
 

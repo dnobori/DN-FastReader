@@ -40,6 +40,12 @@
         statusText = "正常に同期中";
         showUserAuthButton = false;
     }
+    else if (item.IsStarted)
+    {
+        statusColor = "info";
+        statusText = "初期化中";
+        showUserAuthButton = false;
+    }
 
     <div class="box">
         <article class="accounts">

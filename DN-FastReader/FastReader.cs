@@ -26,6 +26,8 @@ namespace DN_FastReader
 
         public string AccountInfoStr { get; set; }
 
+        public bool IsStarted { get; set; }
+
         public string ErrorStr { get; set; }
     }
 
@@ -123,6 +125,7 @@ namespace DN_FastReader
                     UserAccessToken = ad.UserCredential?.AccessToken,
                     AccountInfoStr = ad.AccountInfoStr,
                     ErrorStr = ad.LastError?.Message,
+                    IsStarted = ad.IsStarted,
                 };
 
                 ret.Add(ac);

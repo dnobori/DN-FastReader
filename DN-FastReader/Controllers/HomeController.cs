@@ -43,6 +43,11 @@ namespace DN_FastReader.Controllers
             return Json(version);
         }
 
+        [Authorize]
+        public JsonResult GetErrorCount()
+        {
+            return Json(this.Reader.GetErrorCount());
+        }
 
         public IActionResult About()
         {

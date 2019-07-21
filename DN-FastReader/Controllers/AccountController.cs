@@ -32,6 +32,7 @@ namespace DN_FastReader.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             Account a = new Account();
@@ -39,6 +40,7 @@ namespace DN_FastReader.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(Account a)
         {
             if (a.ProviderName._IsEmpty() == false)
@@ -62,6 +64,7 @@ namespace DN_FastReader.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult OnAdd(Account a)
         {
             List<string> error = new List<string>();
@@ -86,6 +89,7 @@ namespace DN_FastReader.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult AuthStart(string id)
         {
             InboxAdapter adapter = Reader.GetAdapter(id);
@@ -108,6 +112,7 @@ namespace DN_FastReader.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> AuthCallback(string code, string state)
         {
             if (code._IsEmpty() || state._IsEmpty())
@@ -126,6 +131,7 @@ namespace DN_FastReader.Controllers
             return Redirect("/");
         }
 
+        [Authorize]
         public IActionResult Delete(string id)
         {
             Reader.DeleteAdapter(id);
