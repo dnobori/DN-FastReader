@@ -23,8 +23,8 @@
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <small>{{ moment(item.timestamp).format("YYYY/M/D H:mm") }}</small> <small><strong>{{ item.subject }}</strong></small> <small>{{ item.from }}</small> 
-                        <br /><small>{{ item.body }}</small>
+                        {{ moment(item.timestamp).format("YYYY/M/D H:mm") }} <strong>{{ item.subject }} {{ item.group }}</strong> {{ item.from }}
+                        <br />{{ item.body }}
                     </p>
                 </div>
             </div>
