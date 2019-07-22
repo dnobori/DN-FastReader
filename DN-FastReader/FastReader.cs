@@ -29,6 +29,8 @@ namespace DN_FastReader
         public bool IsStarted { get; set; }
 
         public string ErrorStr { get; set; }
+        
+        public string DeleteUrl { get; set; }
     }
 
     public class AccountSetting

@@ -28,6 +28,11 @@ namespace DN_FastReader.Controllers
         {
             Account[] list = Reader.GetAccountList();
 
+            foreach (Account a in list)
+            {
+                a.DeleteUrl = this.Url.Action(nameof(Delete), new { id = a.Guid });
+            }
+
             return View(list);
         }
 

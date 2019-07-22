@@ -10,16 +10,10 @@
     @Html.ActionLink("新しいアカウントを追加", "Create", new { }, new { @class = "button is-info" })
 </p>
 <p>　</p>
-@*<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>*@
+
 @if (Model.Count() >= 1)
 {
-<p>登録済みアカウントの認証情報 (API トークンなど) は、万一このページが不正にアクセスされても読み取られないように、この Web 画面には表示されていません。<br />認証情報を確認したい場合は、サーバーの Local/App_FastReader/Config/AppSettingsEx/Accounts.json をご覧ください。</p><BR />
+    <p>登録済みアカウントの認証情報 (API トークンなど) は、万一このページが不正にアクセスされても読み取られないように、この Web 画面には表示されていません。<br />認証情報を確認したい場合は、サーバーの Local/App_FastReader/Config/AppSettingsEx/Accounts.json をご覧ください。</p><BR />
 }
 
 @foreach (var item in Model)
@@ -77,7 +71,9 @@
                         </div>
                     }
                     <p> </p>
-                    @Html.ActionLink("このアカウントを削除", "Delete", new { id = item.Guid }, new { @class = "button is-light" })
+                    @*@Html.ActionLink("このアカウントを削除", "Delete", new { id = item.Guid }, new { @class = "button is-light" })*@
+
+                    <button class="button is-light" onclick="vue.deleteConfirm('@item.Guid', '@item.DeleteUrl')">このアカウントを削除</button>
                 </div>
             </div>
         </article>
@@ -91,6 +87,26 @@
     <a asp-action="Index" asp-controller="Home" class="button is-primary">トップページに戻る</a>
 </div>
 
-@*</tbody>
-    </table>*@
+@section scripts {
 
+    <script type="text/javascript">
+
+        var vue = new Vue({
+
+            methods:
+            {
+                deleteConfirm: function (id, url) {
+                    this.$dialog.confirm({
+                        message: 'アカウントを削除します。よろしいですか?',
+                        onConfirm: () => {
+                            window.location.href = url;
+                        },
+                    });
+                },
+            },
+
+        });
+
+    </script>
+
+}
