@@ -65,6 +65,8 @@ namespace DN_FastReader
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseHttpExceptionLogger();
+
             app.UseStaticFiles();
             //app.UseCookiePolicy();
 
