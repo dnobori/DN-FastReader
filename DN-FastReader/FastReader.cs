@@ -130,13 +130,13 @@ namespace DN_FastReader
 
                 ret.Add(ac);
             }
-
+            
             return ret.ToArray();
         }
 
         ulong currentVersion = 0;
 
-        InboxMessageBox currentBox = new InboxMessageBox();
+        InboxMessageBox currentBox = new InboxMessageBox(true);
 
         void UpdatedCallback()
         {

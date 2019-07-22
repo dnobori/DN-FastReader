@@ -5,8 +5,7 @@
 <p>　</p>
 
 <div id="messages_list_demo" class="box" v-cloak>
-    @*<button v-on:click="shuffle">Shuffle</button>*@
-    <p v-if="items.length == 0 && error == null">未読メッセージはありません。</p>
+    <p v-if="items.length == 0 && error == null">{{ status }}</p>
     <p v-if="error != null"><strong style="color: red">エラーが発生しています: {{ error }}</strong><br /><br /></p>
     <transition-group name="messages_list" tag="article" v-if="items.length != 0">
         <article class="media" v-for="item in items" v-bind:key="item.id">
@@ -41,19 +40,9 @@
             data: {
                 error: null,
                 items: [],
-            },
-            methods: {
-                shuffle: function () {
-                    //this.items = _.shuffle(this.items);
-                    this.items = [1, 2, 3, 89, 4, 5, 6, 7, 8, 9];
-                }
+                status: "未読メッセージはありません。",
             },
             mounted: function () {
-                //axios.get("/Home/GetData/").then(response => {
-                //    var responseData = response.data;
-                //    this.items = responseData.messageList;
-                //});
-
                 var currentVer = -1;
 
                 var reloadMain = function () {
@@ -63,11 +52,14 @@
 
                             axios.get("/Home/GetData/").then(response => {
                                 var responseData = response.data;
+                                if (responseData.isInitialLoading) {
+                                    this.status = "サーバーが各アカウントからメッセージをロード中...";
+                                }
+                                else {
+                                    this.status = "未読メッセージはありません。";
+                                }
                                 this.items = responseData.messageList;
                                 currentVer = serverVer;
-                                //console.log("reloaded " + serverVer);
-                                //console.log(responseData.messageList.length);
-                                //console.log(this);
                                 this.error = null;
                             }).catch(err => {
                                 this.error = err.message;
@@ -83,46 +75,9 @@
                 var this2 = this;
                 window.setInterval(function () {
                     reloadMain.call(this2);
-                    //console.log("polling");
                 }, 1000);
             }
         })
     </script>
 }
 
-
-@*<div class="box">
-        <article class="media">
-            <div class="media-left">
-                <figure class="image is-64x64">
-                    <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
-                </figure>
-            </div>
-            <div class="media-content">
-                <div class="content">
-                    <p>
-                        <strong>John Smith</strong> <small>@@johnsmith</small> <small>31m</small>
-                        <br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
-                    </p>
-                </div>
-            </div>
-        </article>
-
-        <article class="media">
-            <div class="media-left">
-                <figure class="image is-64x64">
-                    <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
-                </figure>
-            </div>
-            <div class="media-content">
-                <div class="content">
-                    <p>
-                        <strong>John Smith</strong> <small>@@johnsmith</small> <small>31m</small>
-                        <br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
-                    </p>
-                </div>
-            </div>
-        </article>
-    </div>*@
