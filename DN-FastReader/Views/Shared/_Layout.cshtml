@@ -1,11 +1,13 @@
 ﻿@inject DN_FastReader.FastReader reader
 @{
-    string title = ViewData["Title"] + "- 未読さん";
+    string title = ViewData["Title"] + " - 未読さん";
     string title2 = ViewData["Title2"] as string;
     if (title2._IsFilled())
     {
         title = title2;
     }
+
+    bool authed = (User.Identity?.IsAuthenticated ?? false);
 }
 <!DOCTYPE html>
 <html>
@@ -17,7 +19,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
     <link rel="icon" type="image/pn" href="~/favicon.png" sizes="256x256" />
-    @*<link rel="stylesheet" href="~/css/site2.css" asp-append-version="true" />*@
 </head>
 <body>
 
@@ -26,17 +27,19 @@
             <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/images/logo.jpg" width="112" height="28" asp-append-version="true">
             </a>
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a v-bind:class="classstr" id="config_button" asp-controller="Account" asp-action="Index" v-cloak>
-                        {{ text }}
-                    </a>
+            @if (authed)
+            {
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a v-bind:class="classstr" id="config_button" asp-controller="Account" asp-action="Index" v-cloak>
+                            {{ text }}
+                        </a>
+                        <a class="button is-light" id="logout_button" asp-controller="EasyCookieAuth" asp-action="Logout">ログアウト</a>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     </nav>
-
-
 
 
     <div class="container body-content">
@@ -56,40 +59,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
 
-    <script>
-        new Vue({
-            el: '#config_button',
-            data: {
-                text: "Config",
-                classstr: "button is-light",
-            },
-            mounted: function () {
-                var reloadMain = function () {
-                    axios.get("/Home/GetErrorCount").then(ver => {
-                        var count = ver.data;
-                        if (count == 0) {
-                            this.text = "アカウント設定";
-                            this.classstr = "button is-light";
-                        }
-                        else {
-                            this.text = count + " 件のエラーが発生中";
-                            this.classstr = "button is-danger";
-                        }
-                    }).catch(err => {
-                    });
-                };
+    @if (authed)
+    {
+        <script>
+            new Vue({
+                el: '#config_button',
+                data: {
+                    text: "Config",
+                    classstr: "button is-light",
+                },
+                mounted: function () {
+                    var reloadMain = function () {
+                        axios.get("/Home/GetErrorCount").then(ver => {
+                            var count = ver.data;
+                            if (count == 0) {
+                                this.text = "アカウント設定";
+                                this.classstr = "button is-light";
+                            }
+                            else {
+                                this.text = count + " 件のエラーが発生中";
+                                this.classstr = "button is-danger";
+                            }
+                        }).catch(err => {
+                        });
+                    };
 
-                reloadMain.call(this);
+                    reloadMain.call(this);
 
-                var this2 = this;
-                window.setInterval(function () {
-                    reloadMain.call(this2);
-                    //console.log("polling");
-                }, 3000);
-            }
-        });
+                    var this2 = this;
+                    window.setInterval(function () {
+                        reloadMain.call(this2);
+                        //console.log("polling");
+                    }, 3000);
+                }
+            });
 
-    </script>
+        </script>
+    }
 
     @RenderSection("Scripts", required: false)
 

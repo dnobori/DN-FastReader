@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Routing;
 
 using IPA.Cores.Basic;
 using IPA.Cores.Helper.Basic;
@@ -41,6 +45,11 @@ namespace DN_FastReader
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
 
+            // Enable cookie auth
+            EasyCookieAuth.LoginFormMessage.TrySet("ログインが必要です。");
+            EasyCookieAuth.AuthenticationPasswordValidator = Helper.SimpleBasicAuthenticationPasswordValidator;
+            EasyCookieAuth.ConfigureServices(services);
+
             services.AddMvc()
                 .AddViewOptions(opt =>
                 {
@@ -55,6 +64,9 @@ namespace DN_FastReader
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime, FastReader fastReader)
         {
             Helper.Configure(app, env);
+
+            // Enable cookie auth
+            EasyCookieAuth.Configure(app, env);
 
             if (Helper.IsDevelopmentMode)
             {
