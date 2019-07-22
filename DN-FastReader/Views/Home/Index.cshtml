@@ -21,9 +21,11 @@
             </div>
             <div class="media-content">
                 <div class="content">
-                    <p>
+                    <p style="margin-bottom: 0">
                         {{ moment(item.timestamp).format("YYYY/M/D H:mm") }} <strong>{{ item.subject }} {{ item.group }}</strong> {{ item.from }}
-                        <br />{{ item.body }}
+                    </p>
+                    <p id="message_body">
+                        {{ item.body }}
                     </p>
                 </div>
             </div>
