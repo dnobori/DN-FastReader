@@ -7,6 +7,8 @@
         title = title2;
     }
 
+    int? refresh = (int?)ViewData["RefreshInterval"];
+
     bool authed = (User.Identity?.IsAuthenticated ?? false);
 }
 <!DOCTYPE html>
@@ -14,6 +16,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @if (refresh.HasValue){<meta http-equiv="refresh" content="@refresh" />}
     <title>@title</title>
     <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
