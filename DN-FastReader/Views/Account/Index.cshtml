@@ -97,7 +97,9 @@
             {
                 deleteConfirm: function (id, url) {
                     this.$dialog.confirm({
-                        message: 'アカウントを削除します。よろしいですか?',
+                        title: "アカウントの削除",
+                        message: "指定されたアカウントを削除します。よろしいですか?",
+                        type: "is-danger",
                         onConfirm: () => {
                             window.location.href = url;
                         },
