@@ -17,6 +17,7 @@ using IPA.Cores.Basic;
 using IPA.Cores.Helper.Basic;
 using static IPA.Cores.Globals.Basic;
 using System.Security.Claims;
+using Microsoft.Extensions.FileProviders;
 
 namespace DN_FastReader
 {
@@ -63,6 +64,9 @@ namespace DN_FastReader
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime, FastReader fastReader)
         {
+            //Helper.AddStaticFileProvider(Lfs.CreateFileProvider(@"C:\git\DN-FastReader\DN-FastReader\wwwroot"));
+            Helper.AddStaticFileProvider(CoresRes.CreateFileProvider(@"/"));
+
             Helper.Configure(app, env);
 
             // Enable cookie auth
@@ -79,9 +83,8 @@ namespace DN_FastReader
 
             app.UseHttpExceptionLogger();
 
-            app.UseStaticFiles();
-            //app.UseCookiePolicy();
-
+            //app.UseStaticFiles();
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -89,7 +92,11 @@ namespace DN_FastReader
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            lifetime.ApplicationStopping.Register(() => fastReader._DisposeSafe());
+            lifetime.ApplicationStopping.Register(() =>
+            {
+                fastReader._DisposeSafe();
+                Helper._DisposeSafe();
+            });
         }
     }
 }
