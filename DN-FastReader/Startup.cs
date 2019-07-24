@@ -23,11 +23,14 @@ namespace DN_FastReader
 {
     public class Startup
     {
-        internal HttpServerStartupHelper Helper { get; }
+        readonly HttpServerStartupHelper Helper;
+        readonly AspNetHelper AspNetHelper;
 
         public Startup(IConfiguration configuration)
         {
             Helper = new HttpServerStartupHelper(configuration);
+
+            AspNetHelper = new AspNetHelper(configuration);
 
             Configuration = configuration;
         }
@@ -37,6 +40,8 @@ namespace DN_FastReader
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AspNetHelper.ConfigureServices(Helper, services);
+
             Helper.ConfigureServices(services);
 
             //services.Configure<CookiePolicyOptions>(options =>
@@ -67,6 +72,8 @@ namespace DN_FastReader
             Helper.AddStaticFileProvider(Lfs.CreateFileProvider(@"C:\git\DN-FastReader\DN-FastReader\wwwroot"));
             Helper.AddStaticFileProvider(CoresRes.CreateFileProvider(@"/"));
 
+            AspNetHelper.Configure(Helper, app, env);
+
             Helper.Configure(app, env);
 
             // Enable cookie auth
@@ -95,6 +102,7 @@ namespace DN_FastReader
             lifetime.ApplicationStopping.Register(() =>
             {
                 fastReader._DisposeSafe();
+                AspNetHelper._DisposeSafe();
                 Helper._DisposeSafe();
             });
         }
