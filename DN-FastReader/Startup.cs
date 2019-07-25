@@ -69,8 +69,8 @@ namespace DN_FastReader
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime, FastReader fastReader)
         {
-            Helper.AddStaticFileProvider(Lfs.CreateFileProvider(@"C:\git\DN-FastReader\DN-FastReader\wwwroot"));
-            Helper.AddStaticFileProvider(CoresRes.CreateFileProvider(@"/"));
+            // wwwroot directory of this project
+            Helper.AddStaticFileProvider(Env.AppRootDir._CombinePath("wwwroot"));
 
             AspNetHelper.Configure(Helper, app, env);
 
