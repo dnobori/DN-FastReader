@@ -28,12 +28,12 @@ namespace DN_FastReader
 {
     public class Startup
     {
-        readonly HttpServerStartupHelper Helper;
+        readonly HttpServerStartupHelper StartupHelper;
         readonly AspNetLib AspNetLib;
 
         public Startup(IConfiguration configuration)
         {
-            Helper = new HttpServerStartupHelper(configuration);
+            StartupHelper = new HttpServerStartupHelper(configuration);
 
             AspNetLib = new AspNetLib(configuration);
 
@@ -45,9 +45,9 @@ namespace DN_FastReader
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            AspNetLib.ConfigureServices(Helper, services);
+            AspNetLib.ConfigureServices(StartupHelper, services);
 
-            Helper.ConfigureServices(services);
+            StartupHelper.ConfigureServices(services);
 
             //services.Configure<CookiePolicyOptions>(options =>
             //{
@@ -58,7 +58,7 @@ namespace DN_FastReader
 
             // Enable cookie auth
             EasyCookieAuth.LoginFormMessage.TrySet("ログインが必要です。");
-            EasyCookieAuth.AuthenticationPasswordValidator = Helper.SimpleBasicAuthenticationPasswordValidator;
+            EasyCookieAuth.AuthenticationPasswordValidator = StartupHelper.SimpleBasicAuthenticationPasswordValidator;
             EasyCookieAuth.ConfigureServices(services);
             
             services.AddMvc()
@@ -79,16 +79,16 @@ namespace DN_FastReader
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime, FastReader fastReader)
         {
             // wwwroot directory of this project
-            Helper.AddStaticFileProvider(Env.AppRootDir._CombinePath("wwwroot"));
+            StartupHelper.AddStaticFileProvider(Env.AppRootDir._CombinePath("wwwroot"));
 
-            AspNetLib.Configure(Helper, app, env);
+            AspNetLib.Configure(StartupHelper, app, env);
 
-            Helper.Configure(app, env);
+            StartupHelper.Configure(app, env);
 
             // Enable cookie auth
             EasyCookieAuth.Configure(app, env);
 
-            if (Helper.IsDevelopmentMode)
+            if (StartupHelper.IsDevelopmentMode)
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -112,7 +112,7 @@ namespace DN_FastReader
             {
                 fastReader._DisposeSafe();
                 AspNetLib._DisposeSafe();
-                Helper._DisposeSafe();
+                StartupHelper._DisposeSafe();
             });
         }
     }
