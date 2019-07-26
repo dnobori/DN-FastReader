@@ -22,6 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="../submodules/IPA-DN-Cores/Cores.NET/Cores.AspNet/**/*.cs" />
+    <Content Include="../submodules/IPA-DN-Cores/Cores.NET/Cores.AspNet/**/*.cshtml" />
+    <EmbeddedResource Include="../submodules/IPA-DN-Cores/Cores.NET/Cores.AspNet/Cores.AspNet.Resource/**/*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
@@ -30,7 +36,5 @@
   <ItemGroup>
     <ProjectReference Include="..\submodules\IPA-DN-Cores\Cores.NET\Cores.Lib\Cores.Lib.Basic.DotNet2.1.Full\Cores.Lib.Basic.DotNet2.1.Full.csproj" />
   </ItemGroup>
-
-  <Import Project="..\submodules\IPA-DN-Cores\Cores.NET\Cores.AspNet\Cores.AspNet.projitems" Label="Shared" />
 
 </Project>

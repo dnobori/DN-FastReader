@@ -29,13 +29,13 @@ namespace DN_FastReader
     public class Startup
     {
         readonly HttpServerStartupHelper Helper;
-        readonly AspNetHelper AspNetHelper;
+        readonly AspNetLib AspNetLib;
 
         public Startup(IConfiguration configuration)
         {
             Helper = new HttpServerStartupHelper(configuration);
 
-            AspNetHelper = new AspNetHelper(configuration);
+            AspNetLib = new AspNetLib(configuration);
 
             Configuration = configuration;
         }
@@ -45,7 +45,7 @@ namespace DN_FastReader
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            AspNetHelper.ConfigureServices(Helper, services);
+            AspNetLib.ConfigureServices(Helper, services);
 
             Helper.ConfigureServices(services);
 
@@ -60,11 +60,15 @@ namespace DN_FastReader
             EasyCookieAuth.LoginFormMessage.TrySet("ログインが必要です。");
             EasyCookieAuth.AuthenticationPasswordValidator = Helper.SimpleBasicAuthenticationPasswordValidator;
             EasyCookieAuth.ConfigureServices(services);
-
+            
             services.AddMvc()
                 .AddViewOptions(opt =>
                 {
                     opt.HtmlHelperOptions.ClientValidationEnabled = false;
+                })
+                .AddRazorOptions(opt =>
+                {
+                    AspNetLib.ConfigureRazorOptions(opt);
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -77,7 +81,7 @@ namespace DN_FastReader
             // wwwroot directory of this project
             Helper.AddStaticFileProvider(Env.AppRootDir._CombinePath("wwwroot"));
 
-            AspNetHelper.Configure(Helper, app, env);
+            AspNetLib.Configure(Helper, app, env);
 
             Helper.Configure(app, env);
 
@@ -107,7 +111,7 @@ namespace DN_FastReader
             lifetime.ApplicationStopping.Register(() =>
             {
                 fastReader._DisposeSafe();
-                AspNetHelper._DisposeSafe();
+                AspNetLib._DisposeSafe();
                 Helper._DisposeSafe();
             });
         }
