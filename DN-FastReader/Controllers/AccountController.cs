@@ -64,7 +64,7 @@ namespace DN_FastReader.Controllers
 
                 helpStr = helpStr._ReplaceStr("___REDIRECT_URL___", redirectUrl);
 
-                string helpStrHtml = Str.LinkUrlOnText(Str.ToHtml(helpStr, true), Consts.HtmlTarget.Blank);
+                string helpStrHtml = Str.LinkUrlOnText(Str.EncodeHtml(helpStr, true), Consts.HtmlTarget.Blank);
 
                 ViewBag.HelpStr = helpStrHtml;
             }
