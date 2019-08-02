@@ -3,9 +3,11 @@
     "Run": {
       "commandName": "Project"
     },
-    "AspNet Test": {
-      "commandName": "Project",
-      "commandLineArgs": "Daemon Test"
+    "DebugHost Restart": {
+      "commandName": "Executable",
+      "executablePath": "$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Tools\\CompiledBin\\DebugHost.exe",
+      "commandLineArgs": "restart DN-FastReader dotnet exec $(ProjectDir)\\bin\\Debug\\netcoreapp2.1\\DN_FastReader.dll Daemon Test",
+      "workingDirectory": ".\\"
     },
     "AspNet Watch": {
       "commandName": "Executable",
