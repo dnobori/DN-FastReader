@@ -2,13 +2,13 @@
   "profiles": {
     "DebugHost Run": {
       "commandName": "Executable",
-      "executablePath": "$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Tools\\CompiledBin\\DebugHost.exe",
-      "commandLineArgs": "restart DN-FastReader dotnet exec $(TargetPath) Daemon Test",
+      "executablePath": "$(ProjectDir)..\\..\\..\\..\\Cores.NET\\\\Tools\\\\CompiledBin\\\\DebugHost.exe",
+      "commandLineArgs": "restart $(ProjectName) dotnet exec $(TargetPath) Daemon Test",
       "workingDirectory": ".\\"
     },
-    "AspNet Test": {
+    "SingleProcess Debug": {
       "commandName": "Project",
-      "commandLineArgs": "Daemon test"
+      "commandLineArgs": "Daemon TestDebug /AppId:$(ProjectName)"
     }
   }
 }
