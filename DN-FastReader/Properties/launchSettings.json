@@ -1,19 +1,14 @@
 {
   "profiles": {
-    "Run": {
-      "commandName": "Project"
-    },
-    "DebugHost Restart": {
+    "DebugHost Run": {
       "commandName": "Executable",
       "executablePath": "$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Tools\\CompiledBin\\DebugHost.exe",
-      "commandLineArgs": "restart DN-FastReader dotnet exec $(ProjectDir)\\bin\\Debug\\netcoreapp2.1\\DN_FastReader.dll Daemon Test",
+      "commandLineArgs": "restart DN-FastReader dotnet exec $(TargetPath) Daemon Test",
       "workingDirectory": ".\\"
     },
-    "AspNet Watch": {
-      "commandName": "Executable",
-      "executablePath": "C:\\Program Files\\dotnet\\dotnet.exe",
-      "commandLineArgs": "watch run Daemon Test",
-      "workingDirectory": ".\\"
+    "AspNet Test": {
+      "commandName": "Project",
+      "commandLineArgs": "Daemon test"
     }
   }
-} 
+}

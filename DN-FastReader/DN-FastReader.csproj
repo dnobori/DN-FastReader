@@ -36,13 +36,14 @@
   <ItemGroup>
     <ProjectReference Include="..\submodules\IPA-DN-Cores\Cores.NET\Cores.Lib\Cores.Lib.Basic.DotNet2.1.Full\Cores.Lib.Basic.DotNet2.1.Full.csproj" />
   </ItemGroup>
-
+  
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-    <Exec Command="$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Tools\\CompiledBin\\DebugHost.exe stop DN-FastReader dotnet exec $(ProjectDir)\\bin\\Debug\\netcoreapp2.1\\DN_FastReader.dll Daemon Test" />
+    <Exec Command="$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Tools\\CompiledBin\\DebugHost.exe stop DN-FastReader dotnet exec $(TargetPath) Daemon Test" />
   </Target>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-    <Exec Command="$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Tools\\CompiledBin\\DebugHost.exe start DN-FastReader dotnet exec $(ProjectDir)\\bin\\Debug\\netcoreapp2.1\\DN_FastReader.dll Daemon Test" />
+    <Exec Command="$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Tools\\CompiledBin\\DebugHost.exe start DN-FastReader dotnet exec $(TargetPath) Daemon Test" />
   </Target>
+
 
 </Project>
