@@ -10,6 +10,18 @@
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>CORES_CODES_ASPNETMVC;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>TRACE;DEBUG;CORES_CODES_ASPNETMVC;</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Local\**" />
     <Compile Remove="Log\**" />
@@ -22,9 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../submodules/IPA-DN-Cores/Cores.NET/Cores.AspNet/**/*.cs" />
-    <Content Include="../submodules/IPA-DN-Cores/Cores.NET/Cores.AspNet/**/*.cshtml" />
-    <EmbeddedResource Include="../submodules/IPA-DN-Cores/Cores.NET/Cores.AspNet/AspNet.Cores.Resource/**/*" />
+    <Compile Include="../submodules/IPA-DN-Cores/Cores.NET/Cores.Codes/**/*.cs" />
+    <Content Include="../submodules/IPA-DN-Cores/Cores.NET/Cores.Codes/**/*.cshtml" />
+    <EmbeddedResource Include="../submodules/IPA-DN-Cores/Cores.NET/Cores.Codes/Resources/**/*" />
   </ItemGroup>
 
   <ItemGroup>
