@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DN_FastReader.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 
 using IPA.Cores.Basic;
 using IPA.Cores.Helper.Basic;
 using static IPA.Cores.Globals.Basic;
-using Microsoft.AspNetCore.Diagnostics;
+
+using IPA.Cores.Codes;
+using IPA.Cores.Helper.Codes;
+using static IPA.Cores.Globals.Codes;
 
 namespace DN_FastReader.Controllers
 {
@@ -30,23 +34,23 @@ namespace DN_FastReader.Controllers
         }
 
         [Authorize]
-        public JsonResult GetData()
+        public IActionResult GetData()
         {
             InboxMessageBox box = this.Reader.GetCurrentBox();
-            return Json(box);
+            return box._AspNetJsonResult();
         }
 
         [Authorize]
-        public JsonResult GetVersion()
+        public IActionResult GetVersion()
         {
             int version = this.Reader.GetCurrentVersion();
-            return Json(version);
+            return version._AspNetJsonResult();
         }
 
         [Authorize]
-        public JsonResult GetErrorCount()
+        public IActionResult GetErrorCount()
         {
-            return Json(this.Reader.GetErrorCount());
+            return this.Reader.GetErrorCount()._AspNetJsonResult();
         }
 
         public IActionResult About()

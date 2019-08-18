@@ -9,24 +9,24 @@
     <p v-if="items.length == 0 && error == null">{{ status }}</p>
     <p v-if="error != null"><strong style="color: red">エラーが発生しています: {{ error }}</strong><br /><br /></p>
     <transition-group name="messages_list" tag="article" v-if="items.length != 0">
-        <article class="media" v-for="item in items" v-bind:key="item.id">
+        <article class="media" v-for="item in items" v-bind:key="item.Id">
             <div class="media-left">
                 <figure class="image is-32x32">
-                    <img :src="item.serviceImage" alt="Image">
+                    <img :src="item.ServiceImage" alt="Image">
                 </figure>
             </div>
-            <div class="media-left" v-if="item.serviceImage != item.fromImage">
+            <div class="media-left" v-if="item.ServiceImage != item.FromImage">
                 <figure class="image is-24x24">
-                    <img :src="item.fromImage" alt="Image">
+                    <img :src="item.FromImage" alt="Image">
                 </figure>
             </div>
             <div class="media-content">
                 <div class="content">
                     <p style="margin-bottom: 0">
-                        {{ moment(item.timestamp).format("YYYY/M/D H:mm") }} <strong>{{ item.subject }} {{ item.group }}</strong> {{ item.from }}
+                        {{ moment(item.Timestamp).format("YYYY/M/D H:mm") }} <strong>{{ item.Subject }} {{ item.Group }}</strong> {{ item.From }}
                     </p>
                     <p id="message_body">
-                        {{ item.body }}
+                        {{ item.Body }}
                     </p>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                                 else {
                                     this.status = "未読メッセージはありません。";
                                 }
-                                this.items = responseData.messageList;
+                                this.items = responseData.MessageList;
                                 currentVer = serverVer;
                                 this.error = null;
                             }).catch(err => {
