@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Hosting;
 
 using System.Security.Claims;
 using Microsoft.Extensions.FileProviders;
@@ -45,49 +46,47 @@ namespace DN_FastReader
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // AspNetLib による設定を追加
             AspNetLib.ConfigureServices(StartupHelper, services);
 
+            // 基本的な設定を追加
             StartupHelper.ConfigureServices(services);
 
-            //services.Configure<CookiePolicyOptions>(options =>
-            //{
-            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-            //    options.CheckConsentNeeded = context => true;
-            //    options.MinimumSameSitePolicy = SameSiteMode.None;
-            //});
+            // リクエスト数制限機能を追加
+            services.AddHttpRequestRateLimiter<HttpRequestRateLimiterHashKeys.SrcIPAddress>(_ => { });
 
-            // Enable cookie auth
+            //// Cookie 認証機能を追加
             EasyCookieAuth.LoginFormMessage.TrySet("ログインが必要です。");
             EasyCookieAuth.AuthenticationPasswordValidator = StartupHelper.SimpleBasicAuthenticationPasswordValidator;
-            EasyCookieAuth.ConfigureServices(services);
-            
-            services.AddMvc()
-                .AddViewOptions(opt =>
-                {
-                    opt.HtmlHelperOptions.ClientValidationEnabled = false;
-                })
-                .AddRazorOptions(opt =>
-                {
-                    AspNetLib.ConfigureRazorOptions(opt);
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            EasyCookieAuth.ConfigureServices(services, !StartupHelper.ServerOptions.AutomaticRedirectToHttpsIfPossible);
 
+            // MVC 機能を追加
+            services.AddControllersWithViews()
+                .AddViewOptions(opt => opt.HtmlHelperOptions.ClientValidationEnabled = false)
+                .AddRazorOptions(opt => AspNetLib.ConfigureRazorOptions(opt))
+                .AddRazorRuntimeCompilation(opt => AspNetLib.ConfigureRazorRuntimeCompilationOptions(opt))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            //// シングルトンサービスの注入
             services.AddSingleton(new FastReader());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime, FastReader fastReader)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime, FastReader fastReader)
         {
-            // wwwroot directory of this project
+            // リクエスト数制限
+            app.UseHttpRequestRateLimiter<HttpRequestRateLimiterHashKeys.SrcIPAddress>();
+
+            // wwwroot ディレクトリを static ファイルのルートとして追加
             StartupHelper.AddStaticFileProvider(Env.AppRootDir._CombinePath("wwwroot"));
 
+            // AspNetLib による設定を追加
             AspNetLib.Configure(StartupHelper, app, env);
 
+            // 基本的な設定を追加
             StartupHelper.Configure(app, env);
 
-            // Enable cookie auth
-            EasyCookieAuth.Configure(app, env);
-
+            // エラーページを追加
             if (StartupHelper.IsDevelopmentMode)
             {
                 app.UseDeveloperExceptionPage();
@@ -97,15 +96,25 @@ namespace DN_FastReader
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            // エラーログを追加
             app.UseHttpExceptionLogger();
 
-            //app.UseStaticFiles();
-            
-            app.UseMvc(routes =>
+            // Static ファイルを追加
+            app.UseStaticFiles();
+
+            // ルーティングを有効可 (認証を利用する場合は認証前に呼び出す必要がある)
+            app.UseRouting();
+
+            // 認証・認可を実施
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            // ルートマップを定義
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
             lifetime.ApplicationStopping.Register(() =>
