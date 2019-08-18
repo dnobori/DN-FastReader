@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DN-FastReader", "DN-FastRea
 		{D9CA84CD-D082-4DA4-A41F-732072CBB878} = {D9CA84CD-D082-4DA4-A41F-732072CBB878}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cores.Lib.Basic.AspNet3.0.Full", "submodules\IPA-DN-Cores\Cores.NET\Cores.Lib\Cores.Lib.Basic.AspNet3.0.Full\Cores.Lib.Basic.AspNet3.0.Full.csproj", "{D9CA84CD-D082-4DA4-A41F-732072CBB878}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cores.Web", "submodules\IPA-DN-Cores\Cores.NET\Cores.Web\Cores.Web.csproj", "{D9CA84CD-D082-4DA4-A41F-732072CBB878}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Cores.Basic", "submodules\IPA-DN-Cores\Cores.NET\Cores.Basic\Cores.Basic.shproj", "{1C674893-7C84-4E7C-834E-6E2370225DA0}"
 EndProject
