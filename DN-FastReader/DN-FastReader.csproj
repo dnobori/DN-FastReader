@@ -51,11 +51,11 @@
   </ItemGroup>
   
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-    <Exec Command="$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Tools\\CompiledBin\\DebugHost.exe stop $(ProjectName) dotnet exec $(TargetPath) Daemon Test" />
+    <Exec Command="$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Dev.Tools\\CompiledBin\\DebugHost.exe stop $(ProjectName) dotnet exec $(TargetPath) Daemon Test" />
   </Target>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-    <Exec Command="$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Tools\\CompiledBin\\DebugHost.exe start $(ProjectName) dotnet exec $(TargetPath) Daemon Test" />
+    <Exec Command="$(ProjectDir)\\..\\submodules\\IPA-DN-Cores\\Cores.NET\\Dev.Tools\\CompiledBin\\DebugHost.exe start $(ProjectName) dotnet exec $(TargetPath) Daemon Test" />
   </Target>
 
 
