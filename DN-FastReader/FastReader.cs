@@ -62,7 +62,7 @@ namespace DN_FastReader
             {
                 this.Inbox = new Inbox(new InboxOptions(recordRealtimeTextLog: true));
 
-                this.Inbox.StateChangeEventListener.RegisterCallback(async (caller, type, state) => { UpdatedCallback(); await Task.CompletedTask; });
+                this.Inbox.StateChangeEventListener.RegisterCallback(async (caller, type, state, args) => { UpdatedCallback(); await Task.CompletedTask; });
 
                 this.AccountsHive = Hive.LocalAppSettingsEx["Accounts"];
 
