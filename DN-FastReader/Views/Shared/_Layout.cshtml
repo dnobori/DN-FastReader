@@ -1,7 +1,7 @@
 ﻿@inject DN_FastReader.FastReader reader
 @{
     string title = ViewData["Title"] + " - 未読さん";
-    string title2 = ViewData["Title2"] as string;
+    string? title2 = ViewData["Title2"] as string;
     if (title2._IsFilled())
     {
         title = title2;

@@ -15,34 +15,34 @@ namespace DN_FastReader
 {
     public class Account
     {
-        public string Guid { get; set; }
+        public string Guid { get; set; } = null!;
 
-        public string ProviderName { get; set; }
+        public string ProviderName { get; set; } = null!;
 
-        public string AppClientId { get; set; }
-        public string AppClientSecret { get; set; }
+        public string AppClientId { get; set; } = null!;
+        public string AppClientSecret { get; set; } = null!;
 
-        public string UserAccessToken { get; set; }
+        public string UserAccessToken { get; set; } = null!;
 
-        public string AccountInfoStr { get; set; }
+        public string AccountInfoStr { get; set; } = null!;
 
         public bool IsStarted { get; set; }
 
-        public string ErrorStr { get; set; }
-        
-        public string DeleteUrl { get; set; }
+        public string ErrorStr { get; set; } = null!;
+
+        public string DeleteUrl { get; set; } = null!;
     }
 
     public class AccountSetting
     {
-        public string Guid;
+        public string Guid = null!;
 
-        public string ProviderName;
+        public string ProviderName = null!;
 
-        public string AppClientId;
-        public string AppClientSecret;
+        public string AppClientId = null!;
+        public string AppClientSecret = null!;
 
-        public string UserAccessToken;
+        public string UserAccessToken = null!;
     }
 
     public class AccountSettingList
@@ -50,7 +50,9 @@ namespace DN_FastReader
         public List<AccountSetting> List = new List<AccountSetting>();
     }
 
+#pragma warning disable CA1063 // Implement IDisposable Correctly
     public class FastReader : IDisposable
+#pragma warning restore CA1063 // Implement IDisposable Correctly
     {
         public Inbox Inbox { get; }
 
@@ -70,7 +72,7 @@ namespace DN_FastReader
                 {
                     var initial = new AccountSettingList();
 
-                    AccountSettingList o = k.Get("AccountList", initial);
+                    AccountSettingList o = k.Get("AccountList", initial)!;
 
                     foreach (AccountSetting account in o.List)
                     {
@@ -122,11 +124,11 @@ namespace DN_FastReader
                 {
                     Guid = ad.Guid,
                     ProviderName = ad.AdapterName,
-                    AppClientId = ad.AppCredential.ClientId,
-                    AppClientSecret = ad.AppCredential.ClientSecret,
-                    UserAccessToken = ad.UserCredential?.AccessToken,
-                    AccountInfoStr = ad.AccountInfoStr,
-                    ErrorStr = ad.LastError?.Message,
+                    AppClientId = ad.AppCredential.ClientId!,
+                    AppClientSecret = ad.AppCredential.ClientSecret!,
+                    UserAccessToken = ad.UserCredential?.AccessToken!,
+                    AccountInfoStr = ad.AccountInfoStr!,
+                    ErrorStr = ad.LastError?.Message!,
                     IsStarted = ad.IsStarted,
                 };
 
@@ -192,9 +194,9 @@ namespace DN_FastReader
                     {
                         Guid = adapter.Guid,
                         ProviderName = adapter.AdapterName,
-                        AppClientId = adapter.AppCredential?.ClientId,
-                        AppClientSecret = adapter.AppCredential?.ClientSecret,
-                        UserAccessToken = adapter.UserCredential?.AccessToken
+                        AppClientId = adapter.AppCredential?.ClientId!,
+                        AppClientSecret = adapter.AppCredential?.ClientSecret!,
+                        UserAccessToken = adapter.UserCredential?.AccessToken!
                     });
                 }
 

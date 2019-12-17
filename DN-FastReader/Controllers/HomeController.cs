@@ -83,7 +83,7 @@ namespace DN_FastReader.Controllers
             IExceptionHandlerPathFeature errPath =
                 HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 
-            Exception error = errPath?.Error;
+            Exception? error = errPath?.Error;
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = error?.Message ?? "Unknown Error" });
         }
