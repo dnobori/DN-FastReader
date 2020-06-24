@@ -5,7 +5,7 @@
     <RootNamespace>DN_FastReader</RootNamespace>
     <AssemblyName>DN_FastReader</AssemblyName>
     <LangVersion>8.0</LangVersion>
-    <ServerGarbageCollection>true</ServerGarbageCollection>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
     <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <OutputType>Exe</OutputType>
