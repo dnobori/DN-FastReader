@@ -68,6 +68,9 @@
                                 this.error = err.message;
                             });
                         }
+                        else {
+                            this.error = null;
+                        }
                     }).catch(err => {
                         this.error = err.message;
                     });
