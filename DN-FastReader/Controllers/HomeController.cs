@@ -81,7 +81,7 @@ namespace DN_FastReader.Controllers
         public IActionResult Error()
         {
             IExceptionHandlerPathFeature errPath =
-                HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+                HttpContext.Features.Get<IExceptionHandlerPathFeature>()!;
 
             Exception? error = errPath?.Error;
 

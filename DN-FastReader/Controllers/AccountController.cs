@@ -38,7 +38,7 @@ namespace DN_FastReader.Controllers
 
             foreach (Account a in list)
             {
-                a.DeleteUrl = this.Url.Action(nameof(Delete), new { id = a.Guid });
+                a.DeleteUrl = this.Url.Action(nameof(Delete), new { id = a.Guid })._NonNull();
             }
 
             return View(list);

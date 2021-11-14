@@ -2,6 +2,7 @@
 @inject DN_FastReader.FastReader reader
 
 @{
+    Model._MarkNotNull();
     ViewData["Title"] = "新しいアカウントの追加";
     string providerNameFriendly = Model.ProviderName._ReplaceStr("_", " ");
 }
