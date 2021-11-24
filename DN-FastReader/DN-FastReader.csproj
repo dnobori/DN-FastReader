@@ -5,7 +5,6 @@
     <LangVersion>10.0</LangVersion>
     <RootNamespace>DN_FastReader</RootNamespace>
     <AssemblyName>DN_FastReader</AssemblyName>
-    <LangVersion>9.0</LangVersion>
     <ServerGarbageCollection>false</ServerGarbageCollection>
     <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
