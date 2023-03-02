@@ -62,11 +62,18 @@ namespace DN_FastReader
         {
             try
             {
-                this.Inbox = new Inbox(new InboxOptions(recordRealtimeTextLog: true));
-
-                this.Inbox.StateChangeEventListener.RegisterCallback(async (caller, type, state, args) => { UpdatedCallback(); await Task.CompletedTask; });
+                bool ignoreSslCert = false;
 
                 this.AccountsHive = Hive.LocalAppSettingsEx["Accounts"];
+
+                this.AccountsHive.AccessData(true, k =>
+                {
+                    ignoreSslCert = k.GetBool("IgnoreSslCert");
+                });
+
+                this.Inbox = new Inbox(new InboxOptions(recordRealtimeTextLog: true, ignoreSslCert: ignoreSslCert));
+
+                this.Inbox.StateChangeEventListener.RegisterCallback(async (caller, type, state, args) => { UpdatedCallback(); await Task.CompletedTask; });
 
                 this.AccountsHive.AccessData(true, k =>
                 {
